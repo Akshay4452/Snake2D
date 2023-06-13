@@ -8,11 +8,22 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private float moveSpeed = 0.5f; // snake movement speed
     private Vector2 direction = Vector2.right; // Default movemement direction
     private Camera mainCamera;
+    private List<Transform> segments;  // List of Snake Segments
+
+    public Transform segmentPrefab;  // Prefab for the snake segment
 
     private void Start()
     {
         mainCamera = Camera.main;
         moveSpeed = 0.51f;
+
+        segments = new List<Transform>(); // Initialize the Segments list of transforms
+        segments.Add(this.transform);  // Adding the snake head to the list of segments
+
+        if (segmentPrefab == null)
+        {
+            Debug.LogError("Snake Segment Prefab is missing in Inspector");
+        }
     }
 
     private void Update()
@@ -62,6 +73,13 @@ public class SnakeController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // We need to make snake segments follow along the snake
+        // For this purpose, we need to make tail follow its predecessor
+        for(int i = segments.Count - 1; i > 0; i--)
+        {
+            segments[i].position = segments[i - 1].position;
+        }
+
         // Move the Snake Sprite in fixed update
         this.transform.position = new Vector3(
             Mathf.Round(this.transform.position.x) + direction.x * moveSpeed,
@@ -74,7 +92,16 @@ public class SnakeController : MonoBehaviour
         // If Snake head comes in contact with Food then food gets instantiated randomly elsewhere...
         if(collision.tag == "Food")
         {
-            FoodSpawner.Instance.SpawnFood();
+            Grow(); // When snake head collides with food, grow the snake
+            //FoodSpawner.Instance.SpawnFood();
         }
+    }
+
+    private void Grow()
+    {
+        Transform _segment = Instantiate(this.segmentPrefab);
+        _segment.position = segments[segments.Count - 1].position;
+
+        segments.Add( _segment ); // Add the new snake segment to the list
     }
 }

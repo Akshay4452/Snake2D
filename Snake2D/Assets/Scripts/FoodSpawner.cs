@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class FoodSpawner : MonoBehaviour
 {
-    private static FoodSpawner instance;
-    public static FoodSpawner Instance { get { return instance; } }
+    //private static FoodSpawner instance;
+    //public static FoodSpawner Instance { get { return instance; } }
 
-    [SerializeField] private GameObject food;
+    //[SerializeField] private Transform food;
     [SerializeField] private GameObject gridArea; // Grid Area for Food Spawning
     private BoxCollider2D grid;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     private void Start()
     {
@@ -44,6 +44,15 @@ public class FoodSpawner : MonoBehaviour
 
         Vector3 spawnPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
 
-        Instantiate(this.food, spawnPosition, Quaternion.identity);
+        //Instantiate(this.food, spawnPosition, Quaternion.identity);
+        this.transform.position = spawnPosition;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Player")
+        {
+            SpawnFood();
+        }
     }
 }
