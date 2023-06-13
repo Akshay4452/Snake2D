@@ -42,19 +42,19 @@ public class SnakeController : MonoBehaviour
 
         if (viewportPosition.x > 1)
         {
-            newPosition.x = -newPosition.x + 0.1f; // Adding 0.1f for smooth movement
+            newPosition.x = -newPosition.x + 1.5f; // Adding 0.1f for smooth movement
         }
         else if (viewportPosition.x < 0)
         {
-            newPosition.x = -newPosition.x - 0.1f;
+            newPosition.x = -newPosition.x - 1.5f;
         }
         if (viewportPosition.y > 1)
         {
-            newPosition.y = -newPosition.y + 0.1f;
+            newPosition.y = -newPosition.y + 2.0f;
         }
         else if (viewportPosition.y < 0)
         {
-            newPosition.y = -newPosition.y - 0.1f;
+            newPosition.y = -newPosition.y - 2.0f;
         }
 
         transform.position = newPosition;
